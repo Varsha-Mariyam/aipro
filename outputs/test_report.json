@@ -1,0 +1,61 @@
+{
+  "image": "C:\\Users\\varsh\\OneDrive\\Desktop\\mmm\\ai\\Images\\train\\authentic\\0c0584201ff552c4bdcbe160315aa432_jpg.rf.79c9a5cc723178ab7e79e869e7b4be75.jpg",
+  "layer1_algorithmic": {
+    "image": "C:\\Users\\varsh\\OneDrive\\Desktop\\mmm\\ai\\Images\\train\\authentic\\0c0584201ff552c4bdcbe160315aa432_jpg.rf.79c9a5cc723178ab7e79e869e7b4be75.jpg",
+    "fraud_detected": true,
+    "overall_risk": "HIGH",
+    "recommendation": "\ud83d\udeab REJECT",
+    "risk_counts": {
+      "HIGH": 1,
+      "MEDIUM": 1,
+      "LOW": 2
+    },
+    "techniques": {
+      "ela": {
+        "detected": false,
+        "risk": "LOW",
+        "confidence": 0.0004388996958732605,
+        "details": {
+          "variance": 0.2633398175239563
+        }
+      },
+      "metadata": {
+        "detected": true,
+        "risk": "MEDIUM",
+        "confidence": 0.5,
+        "details": {
+          "reason": "No EXIF (stripped)"
+        }
+      },
+      "overlay": {
+        "detected": false,
+        "risk": "LOW",
+        "confidence": 0.08777006172839506,
+        "details": {
+          "edge_density": 0.013165509259259259
+        }
+      },
+      "fonts": {
+        "detected": true,
+        "risk": "HIGH",
+        "confidence": 1.0,
+        "details": {
+          "conf_range": 0.9,
+          "avg_conf": 49.72222222222222
+        }
+      }
+    }
+  },
+  "layer2_cnn": {
+    "available": true,
+    "fake_probability": 4.002004789072089e-05,
+    "authentic_probability": 0.9999599799521093,
+    "confidence": 0.9999599799521093,
+    "prediction": "AUTHENTIC"
+  },
+  "final_decision": {
+    "decision": "\u2705 APPROVE",
+    "confidence": 0.92,
+    "reasoning": "CNN highly confident document is authentic"
+  }
+}

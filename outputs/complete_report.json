@@ -1,7 +1,7 @@
 {
-  "image": "C:\\Users\\varsh\\OneDrive\\Desktop\\mmm\\ai\\Images\\train\\authentic\\2bfd2f150b31581bac34445b5c49dd26_jpg.rf.286e61ad0990d819c133d79bf680ab10.jpg",
+  "image": "C:\\Users\\varsh\\OneDrive\\Desktop\\mmm\\ai\\Images\\train\\authentic\\0c0584201ff552c4bdcbe160315aa432_jpg.rf.3146b68fa30c1a246288d8373be2f2d8.jpg",
   "layer1_algorithmic": {
-    "image": "C:\\Users\\varsh\\OneDrive\\Desktop\\mmm\\ai\\Images\\train\\authentic\\2bfd2f150b31581bac34445b5c49dd26_jpg.rf.286e61ad0990d819c133d79bf680ab10.jpg",
+    "image": "C:\\Users\\varsh\\OneDrive\\Desktop\\mmm\\ai\\Images\\train\\authentic\\0c0584201ff552c4bdcbe160315aa432_jpg.rf.3146b68fa30c1a246288d8373be2f2d8.jpg",
     "fraud_detected": true,
     "overall_risk": "HIGH",
     "recommendation": "\ud83d\udeab REJECT",
@@ -14,9 +14,9 @@
       "ela": {
         "detected": false,
         "risk": "LOW",
-        "confidence": 0.0004858956237634023,
+        "confidence": 0.0004444882770379384,
         "details": {
-          "variance": 0.2915373742580414
+          "variance": 0.26669296622276306
         }
       },
       "metadata": {
@@ -30,9 +30,9 @@
       "overlay": {
         "detected": false,
         "risk": "LOW",
-        "confidence": 0.03500652664056011,
+        "confidence": 0.07637373536996628,
         "details": {
-          "edge_density": 0.0052509789960840155
+          "edge_density": 0.01145606030549494
         }
       },
       "fonts": {
@@ -40,22 +40,22 @@
         "risk": "HIGH",
         "confidence": 1.0,
         "details": {
-          "conf_range": 0.71,
-          "avg_conf": 64.5
+          "conf_range": 0.6,
+          "avg_conf": 37.888888888888886
         }
       }
     }
   },
   "layer2_cnn": {
     "available": true,
-    "fake_probability": 0.0031558177433907986,
-    "authentic_probability": 0.9968441822566092,
-    "confidence": 0.9968441822566092,
+    "fake_probability": 2.703710379137192e-05,
+    "authentic_probability": 0.9999729628962086,
+    "confidence": 0.9999729628962086,
     "prediction": "AUTHENTIC"
   },
   "final_decision": {
-    "decision": "\ud83d\udeab REJECT",
-    "confidence": 0.85,
-    "reasoning": "Strong fraud indicator from one layer"
+    "decision": "\u2705 APPROVE",
+    "confidence": 0.92,
+    "reasoning": "CNN highly confident document is authentic"
   }
 }

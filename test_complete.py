@@ -12,7 +12,7 @@ def test_single_image():
     
     system = CompleteFraudSystem()
     
-    test_img = r"C:\path\to\test\image.jpg"
+    test_img = r"C:\Users\varsh\OneDrive\Desktop\mmm\ai\Images\train\authentic\0c0584201ff552c4bdcbe160315aa432_jpg.rf.79c9a5cc723178ab7e79e869e7b4be75.jpg"
     
     report = system.analyze_complete(test_img, verbose=True)
     system.save_report(report, 'outputs/test_report.json')

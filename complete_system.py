@@ -20,23 +20,15 @@ class CompleteFraudSystem:
     Layer 1: Algorithmic (ELA, EXIF, Overlay, Fonts)
     Layer 2: Deep Learning (CNN pattern recognition)
     """
-    
+
     def __init__(self, cnn_model_path='models/fraud_cnn.h5', img_size=(128, 128)):
-        """
-        Initialize complete system
-        
-        Args:
-            cnn_model_path: Path to trained CNN model
-            img_size: Image size for CNN (must match training size)
-        """
-        
         print("🔄 Initializing Complete Fraud Detection System...")
-        print("="*70)
-        
+        print("=" * 70)
+
         # Layer 1: Algorithmic detection
         print("📦 Loading Day 1 (Algorithmic) detector...")
         self.algo_detector = ForgeryDetector()
-        
+
         # Layer 2: CNN detection
         print("🧠 Loading Day 2 (CNN) model...")
         if os.path.exists(cnn_model_path):
@@ -46,44 +38,25 @@ class CompleteFraudSystem:
             print(f"   ⚠️ CNN model not found: {cnn_model_path}")
             print("   Run training first: python cnn_model.py")
             self.cnn_model = None
-        
+
         self.img_size = img_size
-        
-        print("="*70)
+        print("=" * 70)
         print("✅ System initialized successfully!\n")
-    
+
+    # ---------------------------------------------------------
+    # Preprocess image for CNN
+    # ---------------------------------------------------------
     def preprocess_for_cnn(self, image_path):
-        """
-        Preprocess image for CNN prediction
-        
-        Args:
-            image_path: Path to image
-        
-        Returns:
-            Preprocessed image array
-        """
-        # Load and resize image
-        img = keras.preprocessing.image.load_img(
-            image_path,
-            target_size=self.img_size
-        )
-        
-        # Convert to array and normalize
+        img = keras.preprocessing.image.load_img(image_path, target_size=self.img_size)
         img_array = keras.preprocessing.image.img_to_array(img)
-        img_array = img_array / 255.0  # Normalize to [0, 1]
-        
-        # Add batch dimension
+        img_array = img_array / 255.0
         img_array = np.expand_dims(img_array, axis=0)
-        
         return img_array
-    
+
+    # ---------------------------------------------------------
+    # CNN Prediction
+    # ---------------------------------------------------------
     def cnn_predict(self, image_path):
-        """
-        Get CNN prediction for image
-        
-        Returns:
-            Dictionary with prediction results
-        """
         if self.cnn_model is None:
             return {
                 'available': False,
@@ -92,18 +65,12 @@ class CompleteFraudSystem:
                 'prediction': 'UNKNOWN',
                 'error': 'CNN model not loaded'
             }
-        
+
         try:
-            # Preprocess image
             img_array = self.preprocess_for_cnn(image_path)
-            
-            # Get prediction
             prediction = self.cnn_model.predict(img_array, verbose=0)[0][0]
-            
-            # Interpret prediction
-            # Output is 0-1: 0=authentic, 1=fake
             fake_prob = float(prediction)
-            
+
             if fake_prob > 0.7:
                 pred_class = 'FAKE'
                 confidence = fake_prob
@@ -113,7 +80,7 @@ class CompleteFraudSystem:
             else:
                 pred_class = 'UNCERTAIN'
                 confidence = 0.5
-            
+
             return {
                 'available': True,
                 'fake_probability': fake_prob,
@@ -121,7 +88,7 @@ class CompleteFraudSystem:
                 'confidence': confidence,
                 'prediction': pred_class
             }
-        
+
         except Exception as e:
             return {
                 'available': False,
@@ -130,183 +97,191 @@ class CompleteFraudSystem:
                 'prediction': 'ERROR',
                 'error': str(e)
             }
-    
+
+    # ---------------------------------------------------------
+    # Complete Analysis (Layer 1 + Layer 2)
+    # ---------------------------------------------------------
     def analyze_complete(self, image_path, verbose=True):
-        """
-        Run complete 2-layer fraud analysis
-        
-        Args:
-            image_path: Path to Aadhaar image
-            verbose: Print detailed output
-        
-        Returns:
-            Complete fraud analysis report
-        """
-        
         if verbose:
             print(f"\n{'='*70}")
-            print(f"🔍 COMPLETE FRAUD ANALYSIS")
+            print("🔍 COMPLETE FRAUD ANALYSIS")
             print(f"{'='*70}")
             print(f"Image: {os.path.basename(image_path)}\n")
-        
-        # LAYER 1: Algorithmic Detection
+
+        # LAYER 1
         if verbose:
             print("🔹 LAYER 1: Algorithmic Detection")
-            print("-"*70)
-        
+            print("-" * 70)
         day1_result = self.algo_detector.analyze(image_path, verbose=False)
-        
+
         if verbose:
             print(f"   ELA:      {day1_result['techniques']['ela']['risk']}")
             print(f"   Metadata: {day1_result['techniques']['metadata']['risk']}")
             print(f"   Overlay:  {day1_result['techniques']['overlay']['risk']}")
             print(f"   Fonts:    {day1_result['techniques']['fonts']['risk']}")
             print(f"   Overall:  {day1_result['overall_risk']}\n")
-        
-        # LAYER 2: CNN Detection
+
+        # LAYER 2
         if verbose:
             print("🔹 LAYER 2: CNN Deep Learning")
-            print("-"*70)
-        
+            print("-" * 70)
         day2_result = self.cnn_predict(image_path)
-        
+
         if verbose:
             if day2_result['available']:
-                print(f"   Prediction:    {day2_result['prediction']}")
-                print(f"   Fake Prob:     {day2_result['fake_probability']:.2%}")
+                print(f"   Prediction:     {day2_result['prediction']}")
+                print(f"   Fake Prob:      {day2_result['fake_probability']:.2%}")
                 print(f"   Authentic Prob: {day2_result['authentic_probability']:.2%}")
-                print(f"   Confidence:    {day2_result['confidence']:.2%}\n")
+                print(f"   Confidence:     {day2_result['confidence']:.2%}\n")
             else:
                 print(f"   ⚠️ CNN not available: {day2_result.get('error', 'Unknown')}\n")
-        
-        # COMBINED DECISION
+
         final_decision = self.make_final_decision(day1_result, day2_result)
-        
+
         if verbose:
             print("🔹 FINAL DECISION")
-            print("-"*70)
-            print(f"   Decision: {final_decision['decision']}")
+            print("-" * 70)
+            print(f"   Decision:   {final_decision['decision']}")
             print(f"   Confidence: {final_decision['confidence']:.2%}")
-            print(f"   Reasoning: {final_decision['reasoning']}")
-            print("="*70 + "\n")
-        
-        # Compile complete report
+            print(f"   Reasoning:  {final_decision['reasoning']}")
+            print("=" * 70 + "\n")
+
         report = {
             'image': image_path,
             'layer1_algorithmic': day1_result,
             'layer2_cnn': day2_result,
             'final_decision': final_decision
         }
-        
+
         return report
-    
+
+    # ---------------------------------------------------------
+    # Final Decision Logic (Properly Indented)
+    # ---------------------------------------------------------
     def make_final_decision(self, day1, day2):
-        """
-        Combine Day 1 and Day 2 results for final decision
-        
-        Decision Logic:
-        - If both HIGH risk → REJECT (high confidence)
-        - If both LOW risk → APPROVE (high confidence)
-        - If conflicting → MANUAL_REVIEW (low confidence)
-        """
-        
         day1_risk = day1['overall_risk']
         day2_available = day2['available']
-        
+
         if not day2_available:
-            # CNN not available, use only Day 1
             if day1_risk == 'HIGH':
                 return {
                     'decision': '🚫 REJECT',
                     'confidence': 0.70,
-                    'reasoning': 'High algorithmic risk (CNN not available)'
+                    'reasoning': 'High algorithmic risk (CNN unavailable)'
                 }
             elif day1_risk == 'MEDIUM':
                 return {
-                    'decision': '⚠️ MANUAL_REVIEW',
+                    'decision': '⚠ MANUAL_REVIEW',
                     'confidence': 0.50,
-                    'reasoning': 'Medium algorithmic risk (CNN not available)'
+                    'reasoning': 'Medium algorithmic risk (CNN unavailable)'
                 }
             else:
                 return {
                     'decision': '✅ APPROVE',
-                    'confidence': 0.60,
-                    'reasoning': 'Low algorithmic risk (CNN not available)'
+                    'confidence': 0.65,
+                    'reasoning': 'Low algorithmic risk (CNN unavailable)'
                 }
-        
-        # Both layers available
+
         day2_fake_prob = day2['fake_probability']
-        
-        # High confidence REJECT (both agree it's fake)
+        day2_confidence = day2['confidence']
+        risk_counts = day1.get('risk_counts', {})
+        high_count = risk_counts.get('HIGH', 0)
+        medium_count = risk_counts.get('MEDIUM', 0)
+
+        # Case 1: CNN is very confident
+        if day2_confidence > 0.95:
+            if day2_fake_prob < 0.05:
+                if day1_risk == 'HIGH' and high_count >= 2:
+                    return {
+                        'decision': '⚠ MANUAL_REVIEW',
+                        'confidence': 0.75,
+                        'reasoning': 'CNN confident authentic, but multiple Day 1 risks'
+                    }
+                else:
+                    return {
+                        'decision': '✅ APPROVE',
+                        'confidence': 0.92,
+                        'reasoning': 'CNN highly confident document is authentic'
+                    }
+
+            elif day2_fake_prob > 0.95:
+                return {
+                    'decision': '🚫 REJECT',
+                    'confidence': 0.95,
+                    'reasoning': 'CNN highly confident document is fake'
+                }
+
+        # Case 2: Both agree
         if day1_risk == 'HIGH' and day2_fake_prob > 0.7:
             return {
                 'decision': '🚫 REJECT',
                 'confidence': 0.95,
                 'reasoning': 'Both layers detected high fraud risk'
             }
-        
-        # Medium-high REJECT (one strong signal)
-        if day1_risk == 'HIGH' or day2_fake_prob > 0.8:
-            return {
-                'decision': '🚫 REJECT',
-                'confidence': 0.85,
-                'reasoning': 'Strong fraud indicator from one layer'
-            }
-        
-        # MANUAL_REVIEW (conflicting or medium signals)
-        if (day1_risk == 'HIGH' and day2_fake_prob < 0.4) or \
-           (day1_risk == 'LOW' and day2_fake_prob > 0.6):
-            return {
-                'decision': '⚠️ MANUAL_REVIEW',
-                'confidence': 0.50,
-                'reasoning': 'Conflicting signals between layers'
-            }
-        
-        if day1_risk == 'MEDIUM' or (0.4 <= day2_fake_prob <= 0.6):
-            return {
-                'decision': '⚠️ MANUAL_REVIEW',
-                'confidence': 0.60,
-                'reasoning': 'Medium risk indicators detected'
-            }
-        
-        # High confidence APPROVE (both agree it's authentic)
+
         if day1_risk == 'LOW' and day2_fake_prob < 0.3:
             return {
                 'decision': '✅ APPROVE',
                 'confidence': 0.95,
                 'reasoning': 'Both layers confirm authenticity'
             }
-        
-        # Default APPROVE (mostly low risk)
+
+        # Case 3: Conflicting signals
+        if day1_risk == 'HIGH' and day2_fake_prob < 0.3:
+            if high_count == 1:
+                return {
+                    'decision': '✅ APPROVE',
+                    'confidence': 0.80,
+                    'reasoning': f'CNN confident authentic (fake prob: {day2_fake_prob:.1%}), only one Day 1 risk'
+                }
+            else:
+                return {
+                    'decision': '⚠ MANUAL_REVIEW',
+                    'confidence': 0.60,
+                    'reasoning': 'CNN says authentic but multiple Day 1 risks detected'
+                }
+
+        if day1_risk == 'LOW' and day2_fake_prob > 0.7:
+            return {
+                'decision': '🚫 REJECT',
+                'confidence': 0.85,
+                'reasoning': 'CNN detected fraud patterns despite clean Day 1 checks'
+            }
+
+        # Case 4: Medium risks
+        if day1_risk == 'MEDIUM' or (0.3 <= day2_fake_prob <= 0.7):
+            return {
+                'decision': '⚠ MANUAL_REVIEW',
+                'confidence': 0.60,
+                'reasoning': 'Uncertain indicators - requires human verification'
+            }
+
+        # Case 5: Default
         return {
             'decision': '✅ APPROVE',
-            'confidence': 0.80,
+            'confidence': 0.75,
             'reasoning': 'Low fraud risk overall'
         }
-    
+
+    # ---------------------------------------------------------
+    # Save JSON Report
+    # ---------------------------------------------------------
     def save_report(self, report, output_file='outputs/complete_report.json'):
-        """Save complete report to JSON"""
         import json
-        
         with open(output_file, 'w') as f:
             json.dump(report, f, indent=2, default=str)
-        
         print(f"✅ Report saved: {output_file}")
 
 
-# Test the complete system
+# ---------------------------------------------------------
+# Run script directly
+# ---------------------------------------------------------
 if __name__ == "__main__":
-    # Initialize system
     system = CompleteFraudSystem(
         cnn_model_path='models/fraud_cnn.h5',
         img_size=(128, 128)
     )
-    
-    # Test image
-    test_image = r"C:\Users\varsh\OneDrive\Desktop\mmm\ai\Images\train\authentic\2bfd2f150b31581bac34445b5c49dd26_jpg.rf.286e61ad0990d819c133d79bf680ab10.jpg"
-    
-    # Run complete analysis
+
+    test_image = r"C:\Users\varsh\OneDrive\Desktop\mmm\ai\Images\train\authentic\0c0584201ff552c4bdcbe160315aa432_jpg.rf.3146b68fa30c1a246288d8373be2f2d8.jpg"
     report = system.analyze_complete(test_image, verbose=True)
-    
-    # Save report
     system.save_report(report)
