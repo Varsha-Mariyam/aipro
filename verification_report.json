@@ -1,0 +1,64 @@
+{
+  "status": "success",
+  "final_decision": "\ud83d\udeab REJECT",
+  "ocr": {
+    "extracted_text": "3 COA GaUPENRENT EI \u2014 at / Name: (..) haroon is] sit agka / DOB: 07-03-1990 | \u00bb Male Sees 1234 1234 5555 Sesoaee 31 - STAT Hr areata",
+    "fields": {
+      "name": "Name",
+      "dob": "07-03-1990",
+      "aadhaar": "1234 1234 5555"
+    }
+  },
+  "validation": {
+    "aadhaar_valid": true,
+    "dob_valid": true,
+    "name_valid": true,
+    "all_valid": true
+  },
+  "fraud_detection": {
+    "image": "C:\\Users\\varsh\\OneDrive\\Desktop\\aiproject\\Aadhaar\\preprocessed_aadharcard_images\\new_generated_aadharcard_images\\1front_scaled_down.jpg",
+    "fraud_detected": true,
+    "overall_risk": "HIGH",
+    "recommendation": "\ud83d\udeab REJECT",
+    "risk_counts": {
+      "HIGH": 1,
+      "MEDIUM": 1,
+      "LOW": 2
+    },
+    "techniques": {
+      "ela": {
+        "detected": false,
+        "risk": "LOW",
+        "confidence": 0.003929526408513387,
+        "details": {
+          "variance": 2.3577158451080322
+        }
+      },
+      "metadata": {
+        "detected": true,
+        "risk": "MEDIUM",
+        "confidence": 0.5,
+        "details": {
+          "reason": "No EXIF (stripped)"
+        }
+      },
+      "overlay": {
+        "detected": false,
+        "risk": "LOW",
+        "confidence": 0.47189333333333333,
+        "details": {
+          "edge_density": 0.070784
+        }
+      },
+      "fonts": {
+        "detected": true,
+        "risk": "HIGH",
+        "confidence": 1.0,
+        "details": {
+          "conf_range": 0.86,
+          "avg_conf": 68.47368421052632
+        }
+      }
+    }
+  }
+}

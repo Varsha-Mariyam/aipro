@@ -1,0 +1,61 @@
+{
+  "image": "C:\\Users\\varsh\\OneDrive\\Desktop\\mmm\\ai\\Images\\train\\authentic\\2bfd2f150b31581bac34445b5c49dd26_jpg.rf.286e61ad0990d819c133d79bf680ab10.jpg",
+  "layer1_algorithmic": {
+    "image": "C:\\Users\\varsh\\OneDrive\\Desktop\\mmm\\ai\\Images\\train\\authentic\\2bfd2f150b31581bac34445b5c49dd26_jpg.rf.286e61ad0990d819c133d79bf680ab10.jpg",
+    "fraud_detected": true,
+    "overall_risk": "HIGH",
+    "recommendation": "\ud83d\udeab REJECT",
+    "risk_counts": {
+      "HIGH": 1,
+      "MEDIUM": 1,
+      "LOW": 2
+    },
+    "techniques": {
+      "ela": {
+        "detected": false,
+        "risk": "LOW",
+        "confidence": 0.0004858956237634023,
+        "details": {
+          "variance": 0.2915373742580414
+        }
+      },
+      "metadata": {
+        "detected": true,
+        "risk": "MEDIUM",
+        "confidence": 0.5,
+        "details": {
+          "reason": "No EXIF (stripped)"
+        }
+      },
+      "overlay": {
+        "detected": false,
+        "risk": "LOW",
+        "confidence": 0.03500652664056011,
+        "details": {
+          "edge_density": 0.0052509789960840155
+        }
+      },
+      "fonts": {
+        "detected": true,
+        "risk": "HIGH",
+        "confidence": 1.0,
+        "details": {
+          "conf_range": 0.71,
+          "avg_conf": 64.5
+        }
+      }
+    }
+  },
+  "layer2_cnn": {
+    "available": true,
+    "fake_probability": 0.0031558177433907986,
+    "authentic_probability": 0.9968441822566092,
+    "confidence": 0.9968441822566092,
+    "prediction": "AUTHENTIC"
+  },
+  "final_decision": {
+    "decision": "\ud83d\udeab REJECT",
+    "confidence": 0.85,
+    "reasoning": "Strong fraud indicator from one layer"
+  }
+}
